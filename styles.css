@@ -1,11 +1,62 @@
+:root {
+    --vertical-margin: 6px;
+    --big-ver-margin: 12px;
+}
+
+img[src="#"] {
+    display: none;
+}
+
+#getResultBlock {
+    display: none;
+    flex-direction: column;
+}
+
+body{
+    margin: 0 8px;
+}
+
 #displayCanvas {
     display: block;
-    margin: 0 auto;
+    margin: 0.3vh auto;
     max-width: 100%;
-    height: 90vh; /* Всегда по высоте экрана */
+    height: 99vh; /* Всегда по высоте экрана */
     border: 1px solid black;
 }
 
-#hiddenCanvas{
+#hiddenCanvas {
     display: none;
+}
+
+.twoColumnContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.rightColumn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.topMargin{
+    margin-top: var(--vertical-margin);
+    margin-bottom: var(--vertical-margin);
+}
+
+.bigTopMargin{
+    margin-top: var(--big-ver-margin);
+    margin-bottom: var(--big-ver-margin);
+}
+
+p{
+    margin-top: var(--vertical-margin);
+    margin-bottom: var(--vertical-margin);
+}
+
+.horizontalAlign{
+    margin: 0 auto;
+    margin-bottom: var(--vertical-margin);
 }

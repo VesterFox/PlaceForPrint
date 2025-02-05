@@ -10,12 +10,7 @@
         <div style="width: 40%; float: left;">
             <h3>Оптимальное размещение объектов на листе для печати</h3>
 
-            <input id="upload_field" type="file" accept="image/*"/>
-
-            <p>Разрешение загруженного изображения:
-                <br> Шир = <output id="pImgWidth"></output> px, 
-                Выс = <output id="pImgHeight"></output> px.
-            </p>
+            <input id="upload_field" class="bigTopMargin" type="file" accept="image/*"/>
             
             <!--
             <p>Разрешение объекта на листе:</p>
@@ -24,18 +19,71 @@
             <p>Высота: <input id="objectHeight" type="number" min="10" value="100"></p>
             -->
 
-            <p>Размер объекта на листе:</p>
+            <div class="bigTopMargin">
+                <p>Размер объекта на листе:</p>
 
-            <p>Ширина: <input id="objectWidth" type="number" min="1" value="100"> мм</p> 
-            <p>Высота: <input id="objectHeight" type="number" min="1" value="100"> мм</p>
+                <div class="twoColumnContainer">
+                    <p>Ширина: </p>
+                    <div class="rightColumn">
+                        <input id="objectWidth" type="number" min="1" value="100" 
+                            onchange="updResolutionOutput()"> 
+                        <p>мм</p> 
+                    </div>
+                </div>
+                
+                <div class="twoColumnContainer">
+                    <p>Высота: </p>
+                    <div class="rightColumn">
+                        <input id="objectHeight" type="number" min="1" value="100"
+                            onchange="updResolutionOutput()"> 
+                        <p>мм</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bigTopMargin">
+                <p>Отступ между объектами:</p>
+
+                <div class="twoColumnContainer">
+                    <p>По горизонтали: </p>
+                    <div class="rightColumn">
+                        <input id="horOffset" type="number" min="0" value="0"
+                            onchange="changeOffset()"> 
+                        <p>px</p> 
+                    </div>
+                </div>
+                
+                <div class="twoColumnContainer">
+                    <p>По вертикали: </p>
+                    <div class="rightColumn">
+                        <input id="verOffset" type="number" min="0" value="0"
+                            onchange="changeOffset()"> 
+                        <p>px</p>
+                    </div>
+                </div>
+            </div>
+
+            <p>Разрешение объекта на листе: </p>
+            <p>
+                Шир = <output id="pImgWidth"></output> px, 
+                Выс = <output id="pImgHeight"></output> px.
+            </p>
 
             <div style="display: flex; flex-direction: column;">
-                <img id="uploadResult" height="30%" width="30%" 
-                    style="margin: 10px auto" src="#">
-                <input id="placeButton" type="button" value="Расположить" 
+                <img id="uploadResult" class="horizontalAlign" height="30%" width="30%" src="#">
+
+                <input id="placeButton" class="topMargin" type="button" value="Расположить" 
                     onclick="fillCanvasWithImage()">
-                <input id="saveButton" type="button" value="Сохранить" 
-                    style="margin-top: 10px;" onclick="download()">
+                <div id="getResultBlock">
+                    <div class="twoColumnContainer topMargin">
+                        <input id="saveButton" type="button" value="Сохранить" 
+                            style="width: 45%;" onclick="download()">
+    
+                        <input id="printButton" type="button" value="Печать" 
+                            style="width: 45%;" onclick="printCanvas()">
+                    </div>
+                    <p>Не забудьте отключить поля в настройках печати!</p>
+                </div>
             </div>
         </div>
 

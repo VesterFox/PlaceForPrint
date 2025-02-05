@@ -7,6 +7,8 @@ let uploadedImage;
 let uploadComplete;
 
 let pImgWidth, pImgHeight;
+let imgWidthPX, imgHeightPX;
+let imgWidthMM, imgHeightMM;
 
 //Размер для А4
 //MM_TO_PX = 2480px / 210mm (считая по ширине)
@@ -46,8 +48,7 @@ window.addEventListener('load', function() {
             uploadedImage.onload = function() {
                 uploadComplete = true;
                 document.querySelector("#uploadResult").src = uploadedImage.src;
-                pImgWidth.innerHTML = uploadedImage.width;
-                pImgHeight.innerHTML = uploadedImage.height;
+                updResolutionOutput()
             }
 
             uploadedImage.onerror = function() {
@@ -58,6 +59,15 @@ window.addEventListener('load', function() {
         }
     });
 });
+
+function changeOffset() {
+    if(uploadedImage == null)
+    {
+        return;
+    }
+
+    fillCanvasWithImage();
+}
 
 function fillCanvasWithImage() {
     if(uploadedImage == null)
@@ -72,29 +82,44 @@ function fillCanvasWithImage() {
         return;
     }
 
-    // Получаем размеры в мм и переводим в пиксели
-    const imgWidthMM = parseFloat(document.querySelector("#objectWidth").value);
-    const imgHeightMM = parseFloat(document.querySelector("#objectHeight").value);
-
     if (isNaN(imgWidthMM) || isNaN(imgHeightMM) || imgWidthMM <= 0 || imgHeightMM <= 0) {
         alert("Некорректные размеры объекта.");
         return;
     }
 
-    const imgWidthPX = Math.round(imgWidthMM * MM_TO_PX);
-    const imgHeightPX = Math.round(imgHeightMM * MM_TO_PX);
-
     displayCtx.clearRect(0, 0, displayCanvas.width, displayCanvas.height);
     hiddenCtx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+    
+    updResolutionOutput();
 
-    for (let y = 0; y + imgHeightPX < hiddenCanvas.height; y += imgHeightPX) {
-        for (let x = 0; x + imgWidthPX < hiddenCanvas.width; x += imgWidthPX) {
+    let verOffset = parseInt(document.querySelector("#verOffset").value);
+    let horOffset = parseInt(document.querySelector("#horOffset").value);
+
+    for (let y = 0; y + imgHeightPX + verOffset < hiddenCanvas.height; 
+        y += (imgHeightPX+verOffset)) 
+    {
+        for (let x = 0; x + imgWidthPX + horOffset < hiddenCanvas.width; 
+            x += (imgWidthPX+horOffset)) 
+        {
             hiddenCtx.drawImage(uploadedImage, x, y, imgWidthPX, imgHeightPX);
         }
     }
 
     displayCtx.drawImage(hiddenCanvas, 0, 0, hiddenCanvas.width, hiddenCanvas.height, 
         0, 0, displayCanvas.width, displayCanvas.height);
+
+    document.querySelector("#getResultBlock").style.display = "flex";
+}
+
+function updResolutionOutput(){
+    imgWidthMM = parseInt(document.querySelector("#objectWidth").value);
+    imgHeightMM = parseInt(document.querySelector("#objectHeight").value);
+
+    imgWidthPX = Math.round(imgWidthMM * MM_TO_PX);
+    imgHeightPX = Math.round(imgHeightMM * MM_TO_PX);
+
+    pImgWidth.innerHTML = imgWidthPX;
+    pImgHeight.innerHTML = imgHeightPX;
 }
 
 function download(){
@@ -104,7 +129,31 @@ function download(){
     link.click();
 }
 
-//TODO: Сделать отступы
+function printCanvas() {
+    let imgData = hiddenCanvas.toDataURL("image/png"); 
+    let printWindow = window.open('', '_blank'); 
+    
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print</title>
+            <style>
+                body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+                img { width: 100%; height: auto; }
+            </style>
+        </head>
+        <body>
+            <img src="${imgData}" onload="window.print(); window.close();">
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close(); 
+}
+
+
 //TODO: Сделать оптимальное размещение прямоугольных объектов
 //TODO: Сделать размещение прямоугольных объектов с возможностью повернуть один раз на 90 градусов
-//TODO: Сделать разные форматы листа на котором будут располагаться объекты
+//TODO: Сделать разные форматы листа на котором будут располагаться объекты A5, A3 - A0
+//TODO: Сделать возможность сохранять разрешение сторон при изменении размера объекта на листе
+//TODO: Сообщение о полях при печати перенести в tooltip кнопки печати
