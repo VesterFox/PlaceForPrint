@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> PLACE FOR PRINT </title>
+        <link rel="stylesheet" href="styles.css">
+        <script type="text/javascript" src="logic.js"></script>
+    </head>
+    <body>
+        <div style="width: 40%; float: left;">
+            <h3>Оптимальное размещение объектов на листе для печати</h3>
+
+            <input id="upload_field" type="file" accept="image/*"/>
+
+            <p>Разрешение загруженного изображения:
+                <br> Шир = <output id="pImgWidth"></output> px, 
+                Выс = <output id="pImgHeight"></output> px.
+            </p>
+            
+            <!--
+            <p>Разрешение объекта на листе:</p>
+            
+            <p>Ширина: <input id="objectWidth" type="number" min="10" value="100"></p> 
+            <p>Высота: <input id="objectHeight" type="number" min="10" value="100"></p>
+            -->
+
+            <p>Размер объекта на листе:</p>
+
+            <p>Ширина: <input id="objectWidth" type="number" min="1" value="100"> мм</p> 
+            <p>Высота: <input id="objectHeight" type="number" min="1" value="100"> мм</p>
+
+            <div style="display: flex; flex-direction: column;">
+                <img id="uploadResult" height="30%" width="30%" 
+                    style="margin: 10px auto" src="#">
+                <input id="placeButton" type="button" value="Расположить" 
+                    onclick="fillCanvasWithImage()">
+                <input id="saveButton" type="button" value="Сохранить" 
+                    style="margin-top: 10px;" onclick="download()">
+            </div>
+        </div>
+
+        <div style="width: 60%; float: right;">
+            <canvas id="displayCanvas"></canvas>
+        </div>
+        <canvas id="hiddenCanvas"></canvas>
+    </body>
+</html>
