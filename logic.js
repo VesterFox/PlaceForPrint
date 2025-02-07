@@ -95,6 +95,10 @@ function fillCanvasWithImage() {
     let verOffset = parseInt(document.querySelector("#verOffset").value);
     let horOffset = parseInt(document.querySelector("#horOffset").value);
 
+    //Настройка рамки
+    hiddenCtx.lineWidth = 3;
+    hiddenCtx.strokeStyle = "black";
+
     for (let y = 0; y + imgHeightPX + verOffset < hiddenCanvas.height; 
         y += (imgHeightPX+verOffset)) 
     {
@@ -102,6 +106,7 @@ function fillCanvasWithImage() {
             x += (imgWidthPX+horOffset)) 
         {
             hiddenCtx.drawImage(uploadedImage, x, y, imgWidthPX, imgHeightPX);
+            hiddenCtx.strokeRect(x, y, imgWidthPX+horOffset, imgHeightPX+verOffset);
         }
     }
 
@@ -155,5 +160,15 @@ function printCanvas() {
 //TODO: Сделать оптимальное размещение прямоугольных объектов
 //TODO: Сделать размещение прямоугольных объектов с возможностью повернуть один раз на 90 градусов
 //TODO: Сделать разные форматы листа на котором будут располагаться объекты A5, A3 - A0
+
 //TODO: Сделать возможность сохранять разрешение сторон при изменении размера объекта на листе
-//TODO: Сообщение о полях при печати перенести в tooltip кнопки печати
+
+//TODO: Отдельное меню с настройкой линейки для резки (включить/выключить, толщина, цвет)
+
+//TODO: Объединить загрузку изображения и предпросмотр в один элемент
+
+//TODO: Футер с контактами и информацией о версии
+//TODO: Хедером станет заголовок "Оптимальное размещение...", добавить ему скругленную рамку
+//TODO: Посмотреть макеты для сайтов на bootstrap без общей прокрутки
+
+//TODO: Печать работает только в Firefox (проверить также на Android)

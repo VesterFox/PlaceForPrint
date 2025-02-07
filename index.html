@@ -1,88 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <title> PLACE FOR PRINT </title>
+
         <link rel="stylesheet" href="styles.css">
         <script type="text/javascript" src="logic.js"></script>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
+        crossorigin="anonymous">
     </head>
     <body>
-        <div style="width: 40%; float: left;">
-            <h3>Оптимальное размещение объектов на листе для печати</h3>
+        <div class="d-flex flex-column" style="width: 40%; float: left;">
+            <div class="flex-grow-1 overflow-auto" style="height: 95vh; overflow-y: auto;">
+                <h3>Оптимальное размещение объектов на листе для печати</h3>
 
-            <input id="upload_field" class="bigTopMargin" type="file" accept="image/*"/>
-            
-            <!--
-            <p>Разрешение объекта на листе:</p>
-            
-            <p>Ширина: <input id="objectWidth" type="number" min="10" value="100"></p> 
-            <p>Высота: <input id="objectHeight" type="number" min="10" value="100"></p>
-            -->
+                <input id="upload_field" class="bigTopMargin" type="file" accept="image/*"/>
+                
+                <!--
+                <p>Разрешение объекта на листе:</p>
+                
+                <p>Ширина: <input id="objectWidth" type="number" min="10" value="100"></p> 
+                <p>Высота: <input id="objectHeight" type="number" min="10" value="100"></p>
+                -->
+                
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button
+                                class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne"
+                                aria-expanded="true"
+                                aria-controls="collapseOne">
+                                Настройки размера
+                            </button>
+                        </h2>
+                        <div
+                            id="collapseOne"
+                            class="accordion-collapse collapse show"
+                            aria-labelledby="headingOne"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                
+                                <div class="bigTopMargin">
+                                    <p>Размер объекта на листе:</p>
+                    
+                                    <div class="twoColumnContainer">
+                                        <p>Ширина: </p>
+                                        <div class="rightColumn">
+                                            <input id="objectWidth" type="number" min="1" value="100" 
+                                                onchange="updResolutionOutput()"> 
+                                            <p>мм</p> 
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="twoColumnContainer">
+                                        <p>Высота: </p>
+                                        <div class="rightColumn">
+                                            <input id="objectHeight" type="number" min="1" value="100"
+                                                onchange="updResolutionOutput()"> 
+                                            <p>мм</p>
+                                        </div>
+                                    </div>
+                    
+                                    <div>
+                                        <p>Разрешение объекта на листе: </p>
+                                        <p>
+                                            Шир = <output id="pImgWidth"></output> px, 
+                                            Выс = <output id="pImgHeight"></output> px.
+                                        </p>
+                                    </div>
+                                </div>
 
-            <div class="bigTopMargin">
-                <p>Размер объекта на листе:</p>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="twoColumnContainer">
-                    <p>Ширина: </p>
-                    <div class="rightColumn">
-                        <input id="objectWidth" type="number" min="1" value="100" 
-                            onchange="updResolutionOutput()"> 
-                        <p>мм</p> 
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button
+                                class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo"
+                                aria-expanded="true"
+                                aria-controls="collapseTwo">
+                                Настройки отступов
+                            </button>
+                        </h2>
+                        <div
+                            id="collapseTwo"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="headingTwo"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                
+                                <div class="bigTopMargin">
+                                    <p>Отступ между объектами:</p>
+                    
+                                    <div class="twoColumnContainer">
+                                        <p>По горизонтали: </p>
+                                        <div class="rightColumn">
+                                            <input id="horOffset" type="number" min="0" value="0"
+                                                onchange="changeOffset()"> 
+                                            <p>px</p> 
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="twoColumnContainer">
+                                        <p>По вертикали: </p>
+                                        <div class="rightColumn">
+                                            <input id="verOffset" type="number" min="0" value="0"
+                                                onchange="changeOffset()"> 
+                                            <p>px</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="twoColumnContainer">
-                    <p>Высота: </p>
-                    <div class="rightColumn">
-                        <input id="objectHeight" type="number" min="1" value="100"
-                            onchange="updResolutionOutput()"> 
-                        <p>мм</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bigTopMargin">
-                <p>Отступ между объектами:</p>
 
-                <div class="twoColumnContainer">
-                    <p>По горизонтали: </p>
-                    <div class="rightColumn">
-                        <input id="horOffset" type="number" min="0" value="0"
-                            onchange="changeOffset()"> 
-                        <p>px</p> 
-                    </div>
-                </div>
-                
-                <div class="twoColumnContainer">
-                    <p>По вертикали: </p>
-                    <div class="rightColumn">
-                        <input id="verOffset" type="number" min="0" value="0"
-                            onchange="changeOffset()"> 
-                        <p>px</p>
-                    </div>
-                </div>
-            </div>
+                <div style="display: flex; flex-direction: column;">
+                    <img id="uploadResult" class="horizontalAlign" height="30%" width="30%" src="#">
 
-            <p>Разрешение объекта на листе: </p>
-            <p>
-                Шир = <output id="pImgWidth"></output> px, 
-                Выс = <output id="pImgHeight"></output> px.
-            </p>
+                    <input id="placeButton" class="topMargin" type="button" value="Расположить" 
+                        onclick="fillCanvasWithImage()">
+                    <div id="getResultBlock">
+                        <div class="twoColumnContainer topMargin">
+                            <input id="saveButton" type="button" value="Сохранить" 
+                                style="width: 45%;" onclick="download()">
+        
+                            <input id="printButton" type="button" value="Печать" 
+                                style="width: 45%;" onclick="printCanvas()">
+                        </div>
 
-            <div style="display: flex; flex-direction: column;">
-                <img id="uploadResult" class="horizontalAlign" height="30%" width="30%" src="#">
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" style="margin-right: 10px;" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                                <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                                <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                            </svg>
 
-                <input id="placeButton" class="topMargin" type="button" value="Расположить" 
-                    onclick="fillCanvasWithImage()">
-                <div id="getResultBlock">
-                    <div class="twoColumnContainer topMargin">
-                        <input id="saveButton" type="button" value="Сохранить" 
-                            style="width: 45%;" onclick="download()">
-    
-                        <input id="printButton" type="button" value="Печать" 
-                            style="width: 45%;" onclick="printCanvas()">
+                            <div> Не забудьте отключить поля в настройках печати! </div>
+                        </div>
                     </div>
-                    <p>Не забудьте отключить поля в настройках печати!</p>
                 </div>
             </div>
         </div>
@@ -91,5 +160,10 @@
             <canvas id="displayCanvas"></canvas>
         </div>
         <canvas id="hiddenCanvas"></canvas>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+        crossorigin="anonymous">
+        </script>
     </body>
 </html>
