@@ -54,8 +54,8 @@
                                     <div class="twoColumnContainer">
                                         <p>Ширина: </p>
                                         <div class="rightColumn">
-                                            <input id="objectWidth" type="number" min="1" value="100" 
-                                                onchange="updResolutionOutput()"> 
+                                            <input id="objectWidth" type="number" min="1" value="30" 
+                                                onchange="updWidth()"> 
                                             <p>мм</p> 
                                         </div>
                                     </div>
@@ -63,13 +63,20 @@
                                     <div class="twoColumnContainer">
                                         <p>Высота: </p>
                                         <div class="rightColumn">
-                                            <input id="objectHeight" type="number" min="1" value="100"
-                                                onchange="updResolutionOutput()"> 
+                                            <input id="objectHeight" type="number" min="1" value="30"
+                                                onchange="updHeight()"> 
                                             <p>мм</p>
                                         </div>
                                     </div>
+
+                                    <div class="topMargin">
+                                        <label class="form-check-label" style="margin-right: 5px;" for="aspectRatioCheck">
+                                            Сохранять соотношение сторон 
+                                        </label>
+                                        <input class="form-check-input" type="checkbox" value="" id="aspectRatioCheck" checked onchange="updAspectRatio()">
+                                    </div>
                     
-                                    <div>
+                                    <div class="topMargin">
                                         <p>Разрешение объекта на листе: </p>
                                         <p>
                                             Шир = <output id="pImgWidth"></output> px, 

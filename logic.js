@@ -10,10 +10,16 @@ let pImgWidth, pImgHeight;
 let imgWidthPX, imgHeightPX;
 let imgWidthMM, imgHeightMM;
 
+//Bool
+let keepAspectRatio = true;
+
 //Размер для А4
 //MM_TO_PX = 2480px / 210mm (считая по ширине)
 const MM_TO_PX = 2480 / 210;
 
+function updAspectRatio(){
+    keepAspectRatio = document.getElementById("aspectRatioCheck").value;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     displayCanvas = document.getElementById("displayCanvas");
@@ -48,6 +54,10 @@ window.addEventListener('load', function() {
             uploadedImage.onload = function() {
                 uploadComplete = true;
                 document.querySelector("#uploadResult").src = uploadedImage.src;
+
+                imgWidthMM = parseInt(document.querySelector("#objectWidth").value);
+                imgHeightMM = parseInt(document.querySelector("#objectHeight").value);
+
                 updResolutionOutput()
             }
 
@@ -105,7 +115,7 @@ function fillCanvasWithImage() {
         for (let x = 0; x + imgWidthPX + horOffset < hiddenCanvas.width; 
             x += (imgWidthPX+horOffset)) 
         {
-            hiddenCtx.drawImage(uploadedImage, x, y, imgWidthPX, imgHeightPX);
+            hiddenCtx.drawImage(uploadedImage, x+horOffset/2, y+verOffset/2, imgWidthPX, imgHeightPX);
             hiddenCtx.strokeRect(x, y, imgWidthPX+horOffset, imgHeightPX+verOffset);
         }
     }
@@ -116,10 +126,33 @@ function fillCanvasWithImage() {
     document.querySelector("#getResultBlock").style.display = "flex";
 }
 
-function updResolutionOutput(){
+function getAspectRatio(){
+    return uploadedImage.width / uploadedImage.height;
+}
+
+function updWidth(){
     imgWidthMM = parseInt(document.querySelector("#objectWidth").value);
+
+    if(keepAspectRatio && !isNaN(imgWidthMM) && imgWidthMM > 0){
+        imgHeightMM = Math.round(imgWidthMM / getAspectRatio());
+        document.querySelector("#objectHeight").value = imgHeightMM;
+    }
+
+    updResolutionOutput();
+}
+
+function updHeight(){
     imgHeightMM = parseInt(document.querySelector("#objectHeight").value);
 
+    if(keepAspectRatio && !isNaN(imgHeightMM) && imgHeightMM > 0){
+        imgWidthMM = Math.round(imgHeightMM * getAspectRatio());
+        document.querySelector("#objectWidth").value = imgWidthMM;
+    }
+
+    updResolutionOutput();
+}
+
+function updResolutionOutput(){
     imgWidthPX = Math.round(imgWidthMM * MM_TO_PX);
     imgHeightPX = Math.round(imgHeightMM * MM_TO_PX);
 
@@ -161,14 +194,12 @@ function printCanvas() {
 //TODO: Сделать размещение прямоугольных объектов с возможностью повернуть один раз на 90 градусов
 //TODO: Сделать разные форматы листа на котором будут располагаться объекты A5, A3 - A0
 
-//TODO: Сделать возможность сохранять разрешение сторон при изменении размера объекта на листе
-
 //TODO: Отдельное меню с настройкой линейки для резки (включить/выключить, толщина, цвет)
 
 //TODO: Объединить загрузку изображения и предпросмотр в один элемент
 
 //TODO: Футер с контактами и информацией о версии
 //TODO: Хедером станет заголовок "Оптимальное размещение...", добавить ему скругленную рамку
-//TODO: Посмотреть макеты для сайтов на bootstrap без общей прокрутки
+//TODO: Посмотреть макеты для сайтов на bootstrap без общей прокрутки 
 
 //TODO: Печать работает только в Firefox (проверить также на Android)
